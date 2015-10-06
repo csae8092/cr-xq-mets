@@ -23,7 +23,7 @@
                         <map key="" path="" title="">
                             <!-- needs to be adapted according to project data -->
                             <index key="rf">
-                                <path match="@xml:id" label="@n">pb</path>
+                                <path match="@xml:id" label="@n">tei:pb</path>
                             </index>
                             <index key="fcs.toc" type="default">
                                 <path/>

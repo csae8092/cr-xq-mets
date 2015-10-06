@@ -572,14 +572,14 @@ declare function resource:dmd($resource-pid as xs:string, $project, $data as ite
  TODO implement xinclude-storage
  : @return empty()
 ~:)
-declare function resource:dmd($resource-pid as xs:string, $project, $data as item(), $mdtype as xs:string, $store-location as xs:string?) as empty() {
+declare function resource:dmd($resource-pid as xs:string, $project, $data as item(), $mdtype as xs:string, $store-location as xs:boolean?) as empty() {
     let $doc:=          project:get($project),
         $current :=     resource:dmd($resource-pid,$project),
         $data-location:=base-uri($current),
         $dmdid :=       $resource-pid||$mdtype||$config:RESOURCE_DMDID_SUFFIX,
         $dmdSec :=      $doc//mets:dmdSec[@ID = $dmdid],
-        $store-location := ($store-location_param,$resource:defaultMDStoreLocation)[1],
-        $store-to-db := xs:boolean($store-location='db')
+(:        $store-location := ($store-location_param,$resource:defaultMDStoreLocation)[1],:)
+        $store-to-db := $store-location
     return 
         switch (true())
             (: wrong declaration of Metadata Format :)

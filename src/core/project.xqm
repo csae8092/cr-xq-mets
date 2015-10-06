@@ -281,7 +281,7 @@ declare function project:adminsaccountname($project-pid as xs:string) as xs:stri
 (:~
  : Prepares the structure for a new project or deletes the data of an existing one
 ~:)
-declare %private function project:structure($project-pid as xs:string, $action as xs:string) {
+declare function project:structure($project-pid as xs:string, $action as xs:string) {
     let $admin-accountname := project:adminsaccountname($project-pid),
         $admin-groupname := project:adminsaccountname($project-pid),
         $users-accountname := project:usersaccountname($project-pid),

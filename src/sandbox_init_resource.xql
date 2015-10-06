@@ -16,11 +16,12 @@ declare namespace fcs = "http://clarin.eu/fcs/1.0";
 declare namespace xlink="http://www.w3.org/1999/xlink";
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
-let $rid := "abacus.7",
-    $project-pid := "abacus",
-    $resource-label := "My first resource"
+let $rid := "Eckhel-Online.3",
+    $project-pid := "Eckhel-Online",
+    $resource-label := "02_1778-08-22_54.xml",
+    $resource-pid := "Eckhel-Online.3"
 
-let $data  := doc("/db/cr-data/_temp/mecmua/darling.xml")
+let $data  := doc("/db/cr-data/Eckhel-Online/01_1778-07-02_53.xml")
 
 (:~ 1.  uncomment this to add a new resource  :)        
 (:let  $resource-pid := resource:new-with-label($data, $project-pid, $resource-label) return $resource-pid :)
@@ -30,7 +31,7 @@ let $data  := doc("/db/cr-data/_temp/mecmua/darling.xml")
 
 (: uncomment this to refresh aux-files for all resources :)
 (:for $rid in project:list-resource-pids($project-pid):)
-    return resource:refresh-aux-files(('front','chapter','back','index'), $rid, $project-pid) 
+(:    return resource:refresh-aux-files(('front','chapter','back','index'), $rid, $project-pid) :)
     
     
 (:~ alternatively you can do it one by one:  :)
@@ -43,10 +44,10 @@ let $data  := doc("/db/cr-data/_temp/mecmua/darling.xml")
 
 
 (:~ 4. add a metadata record for given resource :)
-(:let $md := doc("/db/cr-data/_tmp/path/to/metadata_record.xml")/*:)
-(:return resource:dmd($resource-pid,$project-pid,$md,"TEIHDR",true()):)
+let $md := doc("/db/cr-data/Eckhel-Online/02_1778-08-22_54.xml")/*
+return resource:dmd($resource-pid,$project-pid,$md,"CMDI",true())
 
- 
+
 
 (:~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  :  Below are some debugging tests you don't need in normal workflow  :)

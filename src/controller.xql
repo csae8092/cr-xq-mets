@@ -422,68 +422,10 @@ switch (true())
      : projectAdmin module
     ~:)
     case ($module = "projectAdmin" ) return
-(:        let $user := request:get-attribute($domain||".user"):)
-        let $path := config:resolve-template-to-uri($project-config-map, $rel-path)
-        return
-            let $target := 
-            	(: requests for xql endpoints (like store.xql) are passed on, 
-            	everything else is forwarded to the main xquery projectAdmin.xql :)
-            	if (ends-with($exist:resource, "xql"))
-            	then $exist:resource
-            	else "projectAdmin.xql"
-            let $url := $exist:controller||"/modules/"||$module||"/"||$target
-            let $path-steps := tokenize($exist:path,'/'), 
-                $form := projectAdmin:form($path-steps[4]),
-                $form-id :=  if (exists($form))
-                             then $path-steps[4]
-                             else false()
-            let $project := $path-steps[2]
-            return
-                switch(true())
-                    case $target = "store.xql" return
-                        let $parameters := 
-                            let $maps := 
-                                (for $p in request:get-parameter-names() 
-                                    let $value := request:get-parameter($p,"")
-                                    return 
-                                        if ($value!='') 
-                                        then () 
-                                        else map:entry($p,$value),
-                                 for $h in request:get-header-names()
-                                    let $val := request:get-header($h)
-                                    return 
-                                        if ($val!='') 
-                                        then () 
-                                        else map:entry($h,$val),
-                                  map:entry("project-pid",$project)
-                                 )
-                            return map:new($maps)
-                        let $process := projectAdmin:store(request:get-data(),$parameters)
-                        return $process
-                        
-                    case $target = "get.xql" return
-                        let $entity := request:get-parameter("entity",""),
-                            $log := util:log("INFO", $entity)
-                        return projectAdmin:data($project, $entity)
-                    
-                    case ($form-id or $target != 'projectAdmin.xql') return
-(:                    <add-parameter name="user" value="{$user}"/>:)
-                        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">   
-                            <forward url="{$url}">
-                                <add-parameter name="project" value="{$project}"/>
-                                
-                                <add-parameter name="path" value="{$path}"/>
-                                <add-parameter name="exist-path" value="{$exist:path}"/>
-                                <add-parameter name="exist-resource" value="{$exist:resource}"/>
-                             </forward>
-                        </dispatch>
-                    
-                    default return
-                        let $log := util:log("INFO", "redirected request to /exist/"||$exist:prefix||$exist:controller||"/"||$project||"/projectAdmin/start")
-                        return
-                        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">   
-                            <redirect url="/exist/{$exist:prefix}{$exist:controller}/{$project}/projectAdmin/start"/>
-                        </dispatch>
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <cache-control cache="yes"/>
+    </dispatch>
+
       
     (:~
      : Requests for a specific module are forwarded after having checked user authorization. 

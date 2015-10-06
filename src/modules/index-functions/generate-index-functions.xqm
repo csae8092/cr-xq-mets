@@ -146,13 +146,14 @@ module namespace {$gen:project-index-functions-ns-short} = "{$gen:project-index-
 
 declare function {$gen:project-index-functions-ns-short||":apply-index" (: this is just to fool the script analyzing the dependencies :) }($data as node()*, $index-name as xs:string, $x-context as xs:string, $type as xs:string?) as item()* {{ { $gen:cr}
   
-{    let $project-case-statements :=  for $project in $projects-with-index-functions
+{    if(count($projects-with-index-functions) gt 0) then let $project-case-statements :=  for $project in $projects-with-index-functions
                 let $case-statement := "&#09;case '"||$project||"' return "||gen:ns-short($project)||":apply-index($data, $index-name, $x-context, $type)"
                 return $case-statement
 
     return "switch ($x-context)"||$gen:cr||string-join($project-case-statements, $gen:cr)||$gen:cr
             ||"&#09;default return ()"||$gen:cr
-        
+        else
+       '()'||$gen:cr
  }      
   }};
 
